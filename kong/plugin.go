@@ -1,5 +1,7 @@
 package kong
 
+import "encoding/json"
+
 // Plugin represents a Plugin in Kong.
 // Read https://docs.konghq.com/gateway/latest/admin-api/#plugin-object
 // +k8s:deepcopy-gen=true
@@ -45,4 +47,35 @@ func (p *Plugin) FriendlyName() string {
 		return *p.ID
 	}
 	return ""
+}
+
+func (p *Plugin) MarshalJSON() ([]byte, error) {
+	// Marshal the struct to JSON bytes
+	jsonBytes, err := json.Marshal(p)
+	if err != nil {
+		return nil, err
+	}
+
+	// Unmarshal the JSON bytes into a map
+	var data map[string]interface{}
+	err = json.Unmarshal(jsonBytes, &data)
+	if err != nil {
+		return nil, err
+	}
+
+	// Remove null values recursively from the map
+	p.removeNullValues(data)
+
+	// Marshal the modified map back to JSON bytes
+	return json.Marshal(data)
+}
+
+func (p *Plugin) removeNullValues(data map[string]interface{}) {
+	for key, value := range data {
+		if value == nil {
+			delete(data, key)
+		} else if nestedMap, ok := value.(map[string]interface{}); ok {
+			p.removeNullValues(nestedMap)
+		}
+	}
 }

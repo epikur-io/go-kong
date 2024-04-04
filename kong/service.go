@@ -1,5 +1,7 @@
 package kong
 
+import "encoding/json"
+
 // Service represents a Service in Kong.
 // Read https://docs.konghq.com/gateway/latest/admin-api/#service-object
 // +k8s:deepcopy-gen=true
@@ -34,4 +36,35 @@ func (s *Service) FriendlyName() string {
 		return *s.ID
 	}
 	return ""
+}
+
+func (s *Service) MarshalJSON() ([]byte, error) {
+	// Marshal the struct to JSON bytes
+	jsonBytes, err := json.Marshal(s)
+	if err != nil {
+		return nil, err
+	}
+
+	// Unmarshal the JSON bytes into a map
+	var data map[string]interface{}
+	err = json.Unmarshal(jsonBytes, &data)
+	if err != nil {
+		return nil, err
+	}
+
+	// Remove null values recursively from the map
+	s.removeNullValues(data)
+
+	// Marshal the modified map back to JSON bytes
+	return json.Marshal(data)
+}
+
+func (s *Service) removeNullValues(data map[string]interface{}) {
+	for key, value := range data {
+		if value == nil {
+			delete(data, key)
+		} else if nestedMap, ok := value.(map[string]interface{}); ok {
+			s.removeNullValues(nestedMap)
+		}
+	}
 }
