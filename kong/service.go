@@ -39,14 +39,22 @@ func (s *Service) FriendlyName() string {
 }
 
 func (s *Service) MarshalJSON() ([]byte, error) {
+	// Create an alias to avoid infinite recursion
+	type Alias Service
+	aux := &struct {
+		*Alias
+	}{
+		Alias: (*Alias)(s),
+	}
+
 	// Marshal the struct to JSON bytes
-	jsonBytes, err := json.Marshal(s)
+	jsonBytes, err := json.Marshal(aux)
 	if err != nil {
 		return nil, err
 	}
 
 	// Unmarshal the JSON bytes into a map
-	var data map[string]interface{}
+	var data map[string]any
 	err = json.Unmarshal(jsonBytes, &data)
 	if err != nil {
 		return nil, err
@@ -59,11 +67,11 @@ func (s *Service) MarshalJSON() ([]byte, error) {
 	return json.Marshal(data)
 }
 
-func (s *Service) removeNullValues(data map[string]interface{}) {
+func (s *Service) removeNullValues(data map[string]any) {
 	for key, value := range data {
 		if value == nil {
 			delete(data, key)
-		} else if nestedMap, ok := value.(map[string]interface{}); ok {
+		} else if nestedMap, ok := value.(map[string]any); ok {
 			s.removeNullValues(nestedMap)
 		}
 	}

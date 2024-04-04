@@ -63,14 +63,22 @@ func (r *Route) FriendlyName() string {
 }
 
 func (r *Route) MarshalJSON() ([]byte, error) {
+	// Create an alias to avoid infinite recursion
+	type Alias Route
+	aux := &struct {
+		*Alias
+	}{
+		Alias: (*Alias)(r),
+	}
+
 	// Marshal the struct to JSON bytes
-	jsonBytes, err := json.Marshal(r)
+	jsonBytes, err := json.Marshal(aux)
 	if err != nil {
 		return nil, err
 	}
 
 	// Unmarshal the JSON bytes into a map
-	var data map[string]interface{}
+	var data map[string]any
 	err = json.Unmarshal(jsonBytes, &data)
 	if err != nil {
 		return nil, err
@@ -83,11 +91,11 @@ func (r *Route) MarshalJSON() ([]byte, error) {
 	return json.Marshal(data)
 }
 
-func (r *Route) removeNullValues(data map[string]interface{}) {
+func (r *Route) removeNullValues(data map[string]any) {
 	for key, value := range data {
 		if value == nil {
 			delete(data, key)
-		} else if nestedMap, ok := value.(map[string]interface{}); ok {
+		} else if nestedMap, ok := value.(map[string]any); ok {
 			r.removeNullValues(nestedMap)
 		}
 	}
