@@ -84,19 +84,13 @@ func (r *Route) MarshalJSON() ([]byte, error) {
 		return nil, err
 	}
 
-	// Remove null values recursively from the map
-	r.removeNullValues(data)
-
-	// Marshal the modified map back to JSON bytes
-	return json.Marshal(data)
-}
-
-func (r *Route) removeNullValues(data map[string]any) {
+	// Remove null values in first layer from the map
 	for key, value := range data {
 		if value == nil {
 			delete(data, key)
-		} else if nestedMap, ok := value.(map[string]any); ok {
-			r.removeNullValues(nestedMap)
 		}
 	}
+
+	// Marshal the modified map back to JSON bytes
+	return json.Marshal(data)
 }
