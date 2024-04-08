@@ -6,28 +6,28 @@ import "encoding/json"
 // Read https://docs.konghq.com/gateway/latest/admin-api/#route-object
 // +k8s:deepcopy-gen=true
 type Route struct {
-	CreatedAt     *int                `json:"created_at,omitempty" yaml:"created_at,omitempty"`
-	Expression    *string             `json:"expression,omitempty" yaml:"expression,omitempty"`
+	CreatedAt     *int                `json:"created_at" yaml:"created_at"`
+	Expression    *string             `json:"expression" yaml:"expression"`
 	Hosts         []*string           `json:"hosts" yaml:"hosts"`
-	Headers       map[string][]string `json:"headers,omitempty" yaml:"headers,omitempty"`
-	ID            *string             `json:"id,omitempty" yaml:"id,omitempty"`
-	Name          *string             `json:"name,omitempty" yaml:"name,omitempty"`
+	Headers       map[string][]string `json:"headers" yaml:"headers"`
+	ID            *string             `json:"id" yaml:"id"`
+	Name          *string             `json:"name" yaml:"name"`
 	Methods       []*string           `json:"methods" yaml:"methods"`
 	Paths         []*string           `json:"paths" yaml:"paths"`
-	PathHandling  *string             `json:"path_handling,omitempty" yaml:"path_handling,omitempty"`
-	PreserveHost  *bool               `json:"preserve_host,omitempty" yaml:"preserve_host,omitempty"`
-	Priority      *uint64             `json:"priority,omitempty" yaml:"priority,omitempty"`
+	PathHandling  *string             `json:"path_handling" yaml:"path_handling"`
+	PreserveHost  *bool               `json:"preserve_host" yaml:"preserve_host"`
+	Priority      *uint64             `json:"priority" yaml:"priority"`
 	Protocols     []*string           `json:"protocols" yaml:"protocols"`
-	RegexPriority *int                `json:"regex_priority,omitempty" yaml:"regex_priority,omitempty"`
-	Service       *Service            `json:"service,omitempty" yaml:"service,omitempty"`
-	StripPath     *bool               `json:"strip_path,omitempty" yaml:"strip_path,omitempty"`
-	UpdatedAt     *int                `json:"updated_at,omitempty" yaml:"updated_at,omitempty"`
+	RegexPriority *int                `json:"regex_priority" yaml:"regex_priority"`
+	Service       *Service            `json:"service" yaml:"service"`
+	StripPath     *bool               `json:"strip_path" yaml:"strip_path"`
+	UpdatedAt     *int                `json:"updated_at" yaml:"updated_at"`
 	SNIs          []*string           `json:"snis" yaml:"snis"`
 	Sources       []*CIDRPort         `json:"sources" yaml:"sources"`
 	Destinations  []*CIDRPort         `json:"destinations" yaml:"destinations"`
 	Tags          []*string           `json:"tags" yaml:"tags"`
 
-	HTTPSRedirectStatusCode *int `json:"https_redirect_status_code,omitempty" yaml:"https_redirect_status_code,omitempty"`
+	HTTPSRedirectStatusCode *int `json:"https_redirect_status_code" yaml:"https_redirect_status_code"`
 
 	// Kong buffers requests and responses by default. Buffering is not always
 	// desired, for instance if large payloads are being proxied using HTTP 1.1
@@ -40,8 +40,8 @@ type Route struct {
 	// - https://github.com/Kong/kong/pull/6057
 	// - https://docs.konghq.com/2.2.x/admin-api/#route-object
 	//
-	RequestBuffering  *bool `json:"request_buffering,omitempty" yaml:"request_buffering,omitempty"`
-	ResponseBuffering *bool `json:"response_buffering,omitempty" yaml:"response_buffering,omitempty"`
+	RequestBuffering  *bool `json:"request_buffering" yaml:"request_buffering"`
+	ResponseBuffering *bool `json:"response_buffering" yaml:"response_buffering"`
 }
 
 // CIDRPort represents a set of CIDR and a port.

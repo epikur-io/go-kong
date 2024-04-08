@@ -6,18 +6,18 @@ import "encoding/json"
 // Read https://docs.konghq.com/gateway/latest/admin-api/#plugin-object
 // +k8s:deepcopy-gen=true
 type Plugin struct {
-	CreatedAt     *int            `json:"created_at,omitempty" yaml:"created_at,omitempty"`
-	ID            *string         `json:"id,omitempty" yaml:"id,omitempty"`
-	Name          *string         `json:"name,omitempty" yaml:"name,omitempty"`
-	InstanceName  *string         `json:"instance_name,omitempty" yaml:"instance_name,omitempty"`
-	Route         *Route          `json:"route,omitempty" yaml:"route,omitempty"`
-	Service       *Service        `json:"service,omitempty" yaml:"service,omitempty"`
-	Consumer      *Consumer       `json:"consumer,omitempty" yaml:"consumer,omitempty"`
-	ConsumerGroup *ConsumerGroup  `json:"consumer_group,omitempty" yaml:"consumer_group,omitempty"`
-	Config        Configuration   `json:"config,omitempty" yaml:"config,omitempty"`
-	Enabled       *bool           `json:"enabled,omitempty" yaml:"enabled,omitempty"`
-	RunOn         *string         `json:"run_on,omitempty" yaml:"run_on,omitempty"`
-	Ordering      *PluginOrdering `json:"ordering,omitempty" yaml:"ordering,omitempty"`
+	CreatedAt     *int            `json:"created_at" yaml:"created_at"`
+	ID            *string         `json:"id" yaml:"id"`
+	Name          *string         `json:"name" yaml:"name"`
+	InstanceName  *string         `json:"instance_name" yaml:"instance_name"`
+	Route         *Route          `json:"route" yaml:"route"`
+	Service       *Service        `json:"service" yaml:"service"`
+	Consumer      *Consumer       `json:"consumer" yaml:"consumer"`
+	ConsumerGroup *ConsumerGroup  `json:"consumer_group" yaml:"consumer_group"`
+	Config        Configuration   `json:"config" yaml:"config"`
+	Enabled       *bool           `json:"enabled" yaml:"enabled"`
+	RunOn         *string         `json:"run_on" yaml:"run_on"`
+	Ordering      *PluginOrdering `json:"ordering" yaml:"ordering"`
 	Protocols     []*string       `json:"protocols" yaml:"protocols"`
 	Tags          []*string       `json:"tags" yaml:"tags"`
 }
